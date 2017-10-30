@@ -1,0 +1,56 @@
+ /*SPACE BACKGROUND*/
+
+ .container {
+   background-image: url(images/bg2.jpg);
+   background-position: center;
+   margin: 0 auto;
+   width: 860px;
+   height: 600px;
+ }
+
+ /*FLEXBOX DESIGN*/
+
+ .title {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 15%;
+ }
+
+ .start {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 5%;
+ }
+
+ .footer {
+   display: flex;
+ }
+
+ /*TEXTS COLOURS AND FONTS*/
+
+ h1 {
+   color: white;
+   font-size: -webkit-xxx-large;
+ }
+
+ button {
+   color: black;
+   background-color: lightgrey;
+   transition: background-color .3s;
+   transition: padding .3s;
+   font-size: 20px;
+   padding: 10px;
+   border: 5px;
+   border-radius: 5px;
+ }
+
+ button:hover {
+   background-color: rgb(147, 218, 135);
+   padding: 15px;
+ }
+
+ footer {
+   color: grey;
+ }
