@@ -1,0 +1,7 @@
+{
+  "strict": true,
+  "debug": true,
+  "globalstrict": true,
+  "browser": true,
+  "document": true
+}
