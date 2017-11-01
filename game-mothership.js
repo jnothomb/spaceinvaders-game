@@ -1,6 +1,8 @@
 "use strict";
 
+////////////////////////
 // MOTHERSHIP
+////////////////////////
 
 function Mothership() {
   this.position = 14;

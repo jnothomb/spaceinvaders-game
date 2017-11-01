@@ -1,11 +1,11 @@
 "use strict";
 
-//
+////////////////////////
 // GAME GRID
-//
+////////////////////////
 
-function Grid() {
-  this.fullGrid = [
+function Game() {
+  this.fullGame = [
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
@@ -28,34 +28,36 @@ function Grid() {
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
   ];
   this.mothership = new Mothership();
-  this.intervalId = null;
 
-  this.bindKeys(); //added by byron
+  // Interval Setup and Keys
+  this.intervalId = null;
+  this.bindKeys();
   this.setupInterval();
 }
 
+// GRID KEY
 // s = space
 // i = invader
 // m = mothership
 
-//
+////////////////////////
 //ADD FUNCTION TO UPDATE
-//
+////////////////////////
 
-Grid.prototype.update = function() {
+Game.prototype.update = function() {
   // here executes every time before drawing
-  this.fullGrid[this.fullGrid.length - 1].forEach(function(letter, index, row) {
+  this.fullGame[this.fullGame.length - 1].forEach(function(letter, index, row) {
     row[index] = "s";
   });
-  this.fullGrid[this.fullGrid.length - 1][this.mothership.position] = "m";
+  this.fullGame[this.fullGame.length - 1][this.mothership.position] = "m";
 
 };
 
-//
+////////////////////////
 // GRID CONSTRUCTOR
-//
+////////////////////////
 
-Grid.prototype.draw = function() {
+Game.prototype.draw = function() {
   this.update();
 
   //Erase the existing grid before each update
@@ -64,12 +66,12 @@ Grid.prototype.draw = function() {
   }
 
   //Creation of the grid
-  var drawGrid = document.createElement("div");
-  drawGrid.className = "grid";
-  document.getElementsByClassName("container")[0].appendChild(drawGrid);
+  var drawGame = document.createElement("div");
+  drawGame.className = "grid";
+  document.getElementsByClassName("container")[0].appendChild(drawGame);
 
   //Creation of the rows
-  this.fullGrid.forEach(function(row, index) {
+  this.fullGame.forEach(function(row, index) {
     var drawRows = document.createElement("div");
     drawRows.className = "row";
     document.getElementsByClassName("grid")[0].appendChild(drawRows);
@@ -96,11 +98,12 @@ Grid.prototype.draw = function() {
   });
 };
 
-//
+////////////////////////
 //ADDING MOVEMENT TO THE MOTHERSHIP
-//
+////////////////////////
+
 //Function that binds keys to Mothership instructions
-Grid.prototype.bindKeys = function() {
+Game.prototype.bindKeys = function() {
   var self = this;
 
   document.addEventListener('keydown', function(event) {
@@ -113,24 +116,11 @@ Grid.prototype.bindKeys = function() {
   });
 };
 
+////////////////////////
+//INTERVALS
+////////////////////////
 
-// TEST TO SEE THE MOVE RIGHT
-// Grid.prototype.moveR = function() {
-//   this.mothership.moveRight();
-//   this.draw();
-// };
-// TEST TO SEE THE MOVE LEFT
-// Grid.prototype.moveL = function() {
-//   this.mothership.moveLeft();
-//   this.draw();
-// };
-
-
-
-
-
-//Need to Build a
-Grid.prototype.setupInterval = function() {
+Game.prototype.setupInterval = function() {
   var self = this;
   this.intervalId = setInterval(function() {
     self.draw();
@@ -138,10 +128,10 @@ Grid.prototype.setupInterval = function() {
 
 };
 
-//
-// DRAW THE NEW GRID
-//
+////////////////////////
+//RUNNING THE GAME
+////////////////////////
 
-var space = new Grid();
+var space = new Game();
 
 space.draw();
