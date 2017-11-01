@@ -12,9 +12,11 @@
 
  .title {
    display: flex;
-   align-items: center;
-   justify-content: center;
    padding: 15%;
+   background-image: url(images/logo.png);
+   background-size: cover;
+   background-position: center;
+   height: 18%;
  }
 
  .start {
@@ -30,11 +32,6 @@
 
  /*TEXTS COLOURS AND FONTS*/
 
- h1 {
-   color: white;
-   font-size: -webkit-xxx-large;
- }
-
  button {
    color: black;
    background-color: lightgrey;
@@ -47,7 +44,7 @@
  }
 
  button:hover {
-   background-color: rgb(147, 218, 135);
+   background-color: rgb(247, 217, 61);
    padding: 15px;
  }
 
