@@ -3,5 +3,11 @@
   "debug": true,
   "globalstrict": true,
   "browser": true,
-  "document": true
+  "globals": {
+    "document": true,
+    "setInterval": true,
+    "Mothership": true,
+    "console": true
+  }
+
 }
