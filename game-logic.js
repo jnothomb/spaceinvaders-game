@@ -6,7 +6,7 @@
 
 function Game() {
   var self = this;
-  self.positionInvaderx = 0;
+  self.positionInvaderx = 0; //KEEP OR REMOVE IN FUNCTION OF MOVING METHOD
   self.fullGame = [
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
@@ -133,43 +133,35 @@ function Game() {
 
   //setInterval to move every 2sec
 
-  // self.moveInvaders = function() {
-  //   self.invadersIntervalId = setInterval(function() {
-  //     self.positionInvaderx += 1;
-  //     self.fullGame[1] = self.fullGame[1].map(function(el, index) {
-  //       if (index >= self.positionInvaderx) {
-  //         if (el === "s") {
-  //           return "i";
-  //         }
-  //         if (el === "i") {
-  //           return "s";
-  //         }
-  //       }
-  //       return el;
-  //     });
-  //
-  //   }, 2000);
-  //
-  // };
-
-  //TAKE 2 WITH PUSH/POP/SHIFT/UNSHIFT
-
   self.moveInvaders = function() {
+    var counter = 1;
+    var a = self.fullGame[counter];
+    var right = true;
     self.invadersIntervalId = setInterval(function() {
-      self.positionInvaderx += 1;
-      self.fullGame[1] = self.fullGame[1].map(function(el, index) {
-        if (index >= self.positionInvaderx) {
-          if (el === "s") {
-            return "i";
-          }
-          if (el === "i") {
-            return "s";
-          }
-        }
-        return el;
-      });
 
-    }, 2000);
+      //MOVING TO THE RIGHT THEN DOWN
+      if (a[a.length - 1] === "s" && right) {
+        a.pop();
+        a.unshift("s");
+        if (a[a.length - 1] === "i") {
+          self.fullGame.unshift(self.fullGame[0]);
+          self.fullGame.splice(self.fullGame.length - 4, 1);
+          counter++;
+          a = self.fullGame[counter];
+          right = false;
+        }
+      } else {
+        a.push("s");
+        a.shift();
+        if (a[0] == "i") {
+          self.fullGame.unshift(self.fullGame[0]);
+          self.fullGame.splice(self.fullGame.length - 4, 1);
+          counter++;
+          right = true;
+        }
+      }
+
+    }, 350);
 
   };
 
