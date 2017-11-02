@@ -5,7 +5,9 @@
 ////////////////////////
 
 function Game() {
-  this.fullGame = [
+  var self = this;
+  self.positionInvaderx = 0;
+  self.fullGame = [
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
@@ -23,117 +25,163 @@ function Game() {
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
-    ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
+    ["h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h", "h"],
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
   ];
-  this.mothership = new Mothership();
+
+  // GRID KEY
+  // h = home shield
+  // s = space
+  // i = invader
+  // m = mothership
+
+  // Creation of the Mothership
+  self.mothership = new Mothership();
 
   // Interval Setup and Keys
-  this.intervalId = null;
-  this.bindKeys();
-  this.setupInterval();
-}
+  self.intervalId = null;
+  // Interval for invaders
+  self.invadersIntervalId = null;
 
-// GRID KEY
-// s = space
-// i = invader
-// m = mothership
+  // Start Game Instruction
+  self.startGame = function() {
+    self.bindKeys();
+    self.setupInterval();
+    self.moveInvaders();
+  };
 
-////////////////////////
-// PLACING THE MOTHERSHIP
-////////////////////////
+  ////////////////////////
+  // PLACING THE MOTHERSHIP
+  ////////////////////////
 
-//Adding Function to Update
-Game.prototype.update = function() {
-  // before drawing, replaces the entire last row by "s"
-  this.fullGame[this.fullGame.length - 2].forEach(function(letter, index, row) {
-    row[index] = "s";
-  });
-  //Places the mothership at initial position
-  this.fullGame[this.fullGame.length - 2][this.mothership.position] = "m";
-
-};
-
-////////////////////////
-// GRID CONSTRUCTOR
-////////////////////////
-
-Game.prototype.draw = function() {
-  this.update();
-
-  //Erase the existing grid before each update
-  if (document.getElementsByClassName('grid')[0]) {
-    document.getElementsByClassName('grid')[0].remove();
-  }
-
-  //Creation of the grid
-  var drawGame = document.createElement("div");
-  drawGame.className = "grid";
-  document.getElementsByClassName("container")[0].appendChild(drawGame);
-
-  //Creation of the rows
-  this.fullGame.forEach(function(row, index) {
-    var drawRows = document.createElement("div");
-    drawRows.className = "row";
-    document.getElementsByClassName("grid")[0].appendChild(drawRows);
-
-    //Creation of the cells
-    row.forEach(function(cell) {
-      var drawCells = document.createElement("div");
-      drawCells.className = "cell";
-
-      //Switch Statement to Rename the grid classes
-      switch (cell) {
-        case "s":
-          drawCells.className += " " + "space";
-          break;
-        case "i":
-          drawCells.className += " " + "invader";
-          break;
-        case "m":
-          drawCells.className += " " + "mothership";
-          break;
-      }
-      document.getElementsByClassName("row")[index].appendChild(drawCells);
+  //Adding Function to Update
+  self.update = function() {
+    // before drawing, replaces the entire last row by "s"
+    self.fullGame[self.fullGame.length - 2].forEach(function(letter, index, row) {
+      row[index] = "s";
     });
-  });
-};
+    //Places the mothership at initial position
+    self.fullGame[self.fullGame.length - 2][self.mothership.position] = "m";
+  };
 
-////////////////////////
-//ADDING MOVEMENT TO THE MOTHERSHIP
-////////////////////////
+  ////////////////////////
+  // GRID CONSTRUCTOR
+  ////////////////////////
 
-//Function that binds keys to Mothership instructions
-Game.prototype.bindKeys = function() {
-  var self = this;
+  self.draw = function() {
+    self.update();
 
-  document.addEventListener('keydown', function(event) {
-    var keyName = event.which;
-    if (keyName === 39) {
-      self.mothership.moveRight();
-    } else if (keyName === 37) {
-      self.mothership.moveLeft();
+    //Erase the existing grid before each update
+    if (document.getElementsByClassName('grid')[0]) {
+      document.getElementsByClassName('grid')[0].remove();
     }
-  });
-};
 
-////////////////////////
-//INTERVALS
-////////////////////////
+    //Creation of the grid
+    var drawGame = document.createElement("div");
+    drawGame.className = "grid";
+    document.getElementsByClassName("container")[0].appendChild(drawGame);
 
-Game.prototype.setupInterval = function() {
-  var self = this;
-  this.intervalId = setInterval(function() {
-    self.draw();
-  }, 100);
+    //Creation of the rows
+    self.fullGame.forEach(function(row, index) {
+      var drawRows = document.createElement("div");
+      drawRows.className = "row";
+      document.getElementsByClassName("grid")[0].appendChild(drawRows);
 
-};
+      //Creation of the cells
+      row.forEach(function(cell) {
+        var drawCells = document.createElement("div");
+        drawCells.className = "cell";
 
-////////////////////////
-//RUNNING THE GAME
-////////////////////////
+        //Switch Statement to Rename the grid classes
+        switch (cell) {
+          case "w":
+            drawCells.className += " " + "wall";
+            break;
+          case "i":
+            drawCells.className += " " + "invader";
+            break;
+          case "m":
+            drawCells.className += " " + "mothership";
+            break;
+        }
+        document.getElementsByClassName("row")[index].appendChild(drawCells);
+      });
+    });
+  };
 
-var space = new Game();
+  ////////////////////////
+  //ADDING MOVEMENT TO THE MOTHERSHIP
+  ////////////////////////
 
-space.draw();
+  //Function that binds keys to Mothership instructions
+  self.bindKeys = function() {
+
+    document.addEventListener('keydown', function(event) {
+      var keyName = event.which;
+      if (keyName === 39) {
+        self.mothership.moveRight();
+      } else if (keyName === 37) {
+        self.mothership.moveLeft();
+      }
+    });
+  };
+
+  ////////////////////////
+  //ADDING MOVEMENT TO THE INVADERS
+  ////////////////////////
+
+  //setInterval to move every 2sec
+
+  // self.moveInvaders = function() {
+  //   self.invadersIntervalId = setInterval(function() {
+  //     self.positionInvaderx += 1;
+  //     self.fullGame[1] = self.fullGame[1].map(function(el, index) {
+  //       if (index >= self.positionInvaderx) {
+  //         if (el === "s") {
+  //           return "i";
+  //         }
+  //         if (el === "i") {
+  //           return "s";
+  //         }
+  //       }
+  //       return el;
+  //     });
+  //
+  //   }, 2000);
+  //
+  // };
+
+  //TAKE 2 WITH PUSH/POP/SHIFT/UNSHIFT
+
+  self.moveInvaders = function() {
+    self.invadersIntervalId = setInterval(function() {
+      self.positionInvaderx += 1;
+      self.fullGame[1] = self.fullGame[1].map(function(el, index) {
+        if (index >= self.positionInvaderx) {
+          if (el === "s") {
+            return "i";
+          }
+          if (el === "i") {
+            return "s";
+          }
+        }
+        return el;
+      });
+
+    }, 2000);
+
+  };
+
+
+  ////////////////////////
+  //INTERVALS
+  ////////////////////////
+
+  self.setupInterval = function() {
+    self.intervalId = setInterval(function() {
+      self.draw();
+    }, 100);
+
+  };
+}

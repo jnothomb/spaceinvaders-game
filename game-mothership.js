@@ -9,9 +9,15 @@ function Mothership() {
 }
 
 Mothership.prototype.moveRight = function() {
-  this.position++;
+  console.log(this.position);
+  if (this.position !== 29) {
+    this.position++;
+  }
 };
 
 Mothership.prototype.moveLeft = function() {
-  this.position--;
+  console.log(this.position);
+  if (this.position !== 0) {
+    this.position--;
+  }
 };

@@ -7,7 +7,8 @@
     "document": true,
     "setInterval": true,
     "Mothership": true,
-    "console": true
+    "console": true,
+    "Game": true
   }
 
 }

@@ -18,7 +18,7 @@
    justify-content: space-around;
    /*background-color: blue;*/
    height: 30px;
-   /*border: 0.02px solid grey;*/
+   border: 0.02px solid grey;
    margin: 0px;
  }
 
@@ -28,7 +28,7 @@
    /* change to 30px at end */
    width: 25px;
    /* change to 30px at end */
-   /*border: 0.02px solid white;*/
+   border: 0.02px solid white;
    margin: 0px;
  }
 
