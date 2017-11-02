@@ -41,15 +41,17 @@ function Game() {
 // m = mothership
 
 ////////////////////////
-//ADD FUNCTION TO UPDATE
+// PLACING THE MOTHERSHIP
 ////////////////////////
 
+//Adding Function to Update
 Game.prototype.update = function() {
-  // here executes every time before drawing
-  this.fullGame[this.fullGame.length - 1].forEach(function(letter, index, row) {
+  // before drawing, replaces the entire last row by "s"
+  this.fullGame[this.fullGame.length - 2].forEach(function(letter, index, row) {
     row[index] = "s";
   });
-  this.fullGame[this.fullGame.length - 1][this.mothership.position] = "m";
+  //Places the mothership at initial position
+  this.fullGame[this.fullGame.length - 2][this.mothership.position] = "m";
 
 };
 
