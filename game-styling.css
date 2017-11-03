@@ -52,6 +52,26 @@
    background-size: cover;
  }
 
+ .shield {
+   border-top: 0.5px solid rgb(81, 245, 87);
+ }
+
+ .laser:before {
+   content: "";
+   display: block;
+   width: 100%;
+   height: 100%;
+   background-image: url(images/bulletorange.png);
+   background-position: center;
+   background-size: cover;
+ }
+
+ .explosion {
+   background-image: url(images/explosion3.png);
+   background-position: center;
+   background-size: cover;
+ }
+
  /*
 
 SECTION FOR START SCREEN

@@ -8,7 +8,8 @@
     "setInterval": true,
     "Mothership": true,
     "console": true,
-    "Game": true
+    "Game": true,
+    "Laser": true
   }
 
 }
