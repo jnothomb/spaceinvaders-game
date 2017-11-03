@@ -16,18 +16,14 @@
    display: flex;
    align-items: center;
    justify-content: space-around;
-   /*background-color: blue;*/
    height: 30px;
    /*border: 0.02px solid grey;*/
    margin: 0px;
  }
 
  .cell {
-   /*background-color: grey;*/
    height: 25px;
-   /* change to 30px at end */
    width: 25px;
-   /* change to 30px at end */
    /*border: 0.02px solid white;*/
    margin: 0px;
  }
@@ -35,7 +31,6 @@
  /* GRID CHARACTERS */
 
  .invader {
-   /*background-color: red;*/
    background-image: url(characters/invader2.png);
    background-position: center;
    background-size: cover;
@@ -46,10 +41,12 @@
  }
 
  .mothership {
-   /*background-color: blue;*/
-   background-image: url(characters/fighter1.png);
+   background: url(characters/fighter1.png) center center no-repeat;
+   overflow: hidden;
    background-position: center;
    background-size: cover;
+   padding: 17px;
+   margin: -17px;
  }
 
  .shield {

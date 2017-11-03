@@ -9,7 +9,8 @@
     "Mothership": true,
     "console": true,
     "Game": true,
-    "Laser": true
+    "Laser": true,
+    "space": true
   }
 
 }

@@ -8,7 +8,7 @@ function Game() {
   var self = this;
   self.fullGame = [
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
-    ["s", "s", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
+    ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
@@ -30,7 +30,8 @@ function Game() {
   ];
 
   self.motherShipRow = self.fullGame.length - 2;
-  self.lastColum = self.fullGame[0].length - 1;
+  self.lastColumn = self.fullGame[0].length - 1;
+  self.invadersRemainder = 60;
 
   // GRID KEY
   // h = home shield
@@ -129,10 +130,14 @@ function Game() {
 
       if (self.fullGame[self.shipLaser.row][self.shipLaser.col] === 'i') {
         console.log('kill');
+        self.invadersRemainder -= 1;
         self.shipLaser.done = true;
         //time that explosion lasts
-        self.fullGame[self.shipLaser.row][self.shipLaser.col] = 5;
+        self.fullGame[self.shipLaser.row][self.shipLaser.col] = 2;
       }
+    }
+    if (self.invadersRemainder === 0) {
+      console.log("Win!!");
     }
   };
 
@@ -140,7 +145,7 @@ function Game() {
   // ADDING MOVEMENT TO THE MOTHERSHIP
   ////////////////////////
 
-  //Function that binds keys to Mothership instructions
+  //Function that binds keys to Mothership instructions & Shooting
   self.bindKeys = function() {
 
     document.addEventListener('keydown', function(event) {
@@ -149,6 +154,8 @@ function Game() {
         self.mothership.moveRight();
       } else if (keyName === 37) {
         self.mothership.moveLeft();
+      } else if (keyName === 32) {
+        space.shootShipLaser();
       }
     });
   };
@@ -186,27 +193,60 @@ function Game() {
   };
 
   self.moveEveryoneRight = function() {
-    // for var row from 0 to mothership row - 1
-    //   for var col from lastColum - 1 to >= 0; --
-    //     copy value of [row][col] to [row][col +1]
-    //        (game[row][col +1] = [row][col])
-    //     clean value of [row][col]
 
+    // for var row from 0 to mothership row - 1
+    for (var row = 0; row < self.motherShipRow - 1; row++) {
+      //   for var col from lastColumn - 1 to >= 0; --
+      for (var col = self.lastColumn - 1; col >= 0; col--) {
+        //     copy value of [row][col] to [row][col +1]
+        if (self.fullGame[row][col + 1]) {
+          self.fullGame[row][col + 1] = self.fullGame[row][col];
+          //     clean value of [row][col]
+          self.fullGame[row][col] = "s";
+        }
+      }
+    }
   };
 
   self.moveEveryoneLeft = function() {
     // for var row from 0 to mothership row - 1
-    //   for var col from 1 to lastColum
+    //   for var col from 1 to lastColumn
     //     copy value of [row][col] to [row][col -1]
     //     clean value of [row][col]
+
+    // for var row from 0 to mothership row - 1
+    for (var row = 0; row < self.motherShipRow - 1; row++) {
+      //   for var col from 1 to lastColumn
+      for (var col = 1; col <= self.lastColumn; col++) {
+        //     copy value of [row][col] to [row][col -1]
+        if (self.fullGame[row][col - 1]) {
+          self.fullGame[row][col - 1] = self.fullGame[row][col];
+          //     clean value of [row][col]
+          self.fullGame[row][col] = "s";
+        }
+      }
+    }
 
   };
 
   self.moveEveryoneDown = function() {
     // for var row from 1 to mothership row - 1
-    //   for var col from 0 to lastColum
+    //   for var col from 0 to lastColumn
     //     copy value of [row][col] to [row-1][col]
     //     clean value of [row][col]
+
+    // for var row from 1 to mothership row - 1
+    for (var row = self.motherShipRow - 3; row > 0; row--) {
+      //   for var col from 0 to lastColumn
+      for (var col = 0; col <= self.lastColumn; col++) {
+        //     copy value of [row][col] to [row-1][col]
+        if (self.fullGame[row + 1][col]) {
+          self.fullGame[row + 1][col] = self.fullGame[row][col];
+          //     clean value of [row][col]
+          self.fullGame[row][col] = "s";
+        }
+      }
+    }
 
   };
 
@@ -215,7 +255,7 @@ function Game() {
     console.log('move');
 
     if (self.isMovingRight) {
-      if (!self.checkInvadersOnColumn(self.lastColum)) {
+      if (!self.checkInvadersOnColumn(self.lastColumn)) {
         self.moveEveryoneRight();
       } else {
         self.moveEveryoneDown();
@@ -234,38 +274,6 @@ function Game() {
       console.log('game over');
       debugger;
     }
-
-
-
-
-    // //Moving to the right
-    // if (a[a.length - 1] === "s" && right) {
-    //   for (var i = counter; i < counter + 6; i++) {
-    //     self.fullGame[i].pop();
-    //     self.fullGame[i].unshift("s");
-    //   }
-    //   //Moving down at right border
-    //   if (a[a.length - 1] === "i") {
-    //     self.fullGame.unshift(self.fullGame[0]);
-    //     self.fullGame.splice(self.fullGame.length - 4, 1);
-    //     counter++;
-    //     a = self.fullGame[counter];
-    //     right = false;
-    //   }
-    //   //Moving to the left
-    // } else {
-    //   for (var j = counter; j < counter + 6; j++) {
-    //     self.fullGame[j].push("s");
-    //     self.fullGame[j].shift();
-    //   }
-    //   //Moving down at left border
-    //   if (a[0] == "i") {
-    //     self.fullGame.unshift(self.fullGame[0]);
-    //     self.fullGame.splice(self.fullGame.length - 4, 1);
-    //     counter++;
-    //     right = true;
-    //   }
-    // }
 
     self.invadersIntervalId = setTimeout(function() {
       self.moveInvaders();
