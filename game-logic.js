@@ -6,7 +6,6 @@
 
 function Game() {
   var self = this;
-  self.positionInvaderx = 0; //KEEP OR REMOVE IN FUNCTION OF MOVING METHOD
   self.fullGame = [
     ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
     ["s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "i", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"],
@@ -95,8 +94,8 @@ function Game() {
 
         //Switch Statement to Rename the grid classes
         switch (cell) {
-          case "w":
-            drawCells.className += " " + "wall";
+          case "h":
+            drawCells.className += " " + "shield";
             break;
           case "i":
             drawCells.className += " " + "invader";
@@ -111,7 +110,7 @@ function Game() {
   };
 
   ////////////////////////
-  //ADDING MOVEMENT TO THE MOTHERSHIP
+  // ADDING MOVEMENT TO THE MOTHERSHIP
   ////////////////////////
 
   //Function that binds keys to Mothership instructions
@@ -128,10 +127,16 @@ function Game() {
   };
 
   ////////////////////////
-  //ADDING MOVEMENT TO THE INVADERS
+  // MAKING THE MOTHERSHIP SHOOT
   ////////////////////////
 
-  //setInterval to move every 2sec
+
+
+  ////////////////////////
+  // ADDING MOVEMENT TO THE INVADERS
+  ////////////////////////
+
+  //First Row (drivers)
 
   self.moveInvaders = function() {
     var counter = 1;
@@ -139,10 +144,13 @@ function Game() {
     var right = true;
     self.invadersIntervalId = setInterval(function() {
 
-      //MOVING TO THE RIGHT THEN DOWN
+      //Moving to the right
       if (a[a.length - 1] === "s" && right) {
-        a.pop();
-        a.unshift("s");
+        for (var i = counter; i < counter + 6; i++) {
+          self.fullGame[i].pop();
+          self.fullGame[i].unshift("s");
+        }
+        //Moving down at right border
         if (a[a.length - 1] === "i") {
           self.fullGame.unshift(self.fullGame[0]);
           self.fullGame.splice(self.fullGame.length - 4, 1);
@@ -150,9 +158,13 @@ function Game() {
           a = self.fullGame[counter];
           right = false;
         }
+        //Moving to the left
       } else {
-        a.push("s");
-        a.shift();
+        for (var j = counter; j < counter + 6; j++) {
+          self.fullGame[j].push("s");
+          self.fullGame[j].shift();
+        }
+        //Moving down at left border
         if (a[0] == "i") {
           self.fullGame.unshift(self.fullGame[0]);
           self.fullGame.splice(self.fullGame.length - 4, 1);
@@ -160,9 +172,7 @@ function Game() {
           right = true;
         }
       }
-
-    }, 350);
-
+    }, 500);
   };
 
 
