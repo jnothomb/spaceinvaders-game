@@ -82,6 +82,15 @@
    background-size: cover;
  }
 
+ /* Game Won */
+
+ .gameWon {
+   display: block;
+   background-color: green;
+   height: 700px;
+   width: 400px;
+ }
+
  /*
 
 SECTION FOR START SCREEN

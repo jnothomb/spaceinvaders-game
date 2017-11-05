@@ -57,6 +57,35 @@ function Game() {
   self.isMovingRight = true;
 
   ////////////////////////
+  // WIN CONDITION
+  ////////////////////////
+
+  self.gameWin = function() {
+    var gameWon = document.createElement("div");
+    var wonText = "You Win!!";
+
+    // Removes the Grid from HTML?
+    document.getElementsByClassName('grid')[0].remove();
+
+    gameWon.className = "gameWon";
+    document.getElementsByClassName("container")[0].appendChild(gameWon);
+    // MUST ADD SOMETHING TO KILL THE REFRESH OF THE PAGE
+    //Adds text to the new gameWon div? ---> DOES NOT WORK
+    // document.getElementByClassName("gameWon").innerHTML = wonText;
+  };
+
+  ////////////////////////
+  // GAME OVER CONDITION
+  ////////////////////////
+
+  self.gameOver = function() {
+    document.getElementsByClassName('grid')[0].remove();
+    var gameOver = document.createElement("div");
+    gameOver.className = "gameOver";
+    document.getElementsByClassName("container")[0].appendChild(gameOver);
+  };
+
+  ////////////////////////
   // PLACING THE MOTHERSHIP
   ////////////////////////
 
@@ -136,8 +165,10 @@ function Game() {
         self.fullGame[self.shipLaser.row][self.shipLaser.col] = 2;
       }
     }
+    // WIN CONDITION
     if (self.invadersRemainder === 0) {
       console.log("Win!!");
+      self.gameWin();
     }
   };
 
@@ -178,8 +209,6 @@ function Game() {
   // ADDING MOVEMENT TO THE INVADERS
   ////////////////////////
 
-  //First Row (drivers)
-
   self.checkInvadersOnColumn = function(col) {
     for (var ix = 0; ix < self.motherShipRow; ix++) {
       if (self.fullGame[ix][col] === "i") {
@@ -209,10 +238,6 @@ function Game() {
   };
 
   self.moveEveryoneLeft = function() {
-    // for var row from 0 to mothership row - 1
-    //   for var col from 1 to lastColumn
-    //     copy value of [row][col] to [row][col -1]
-    //     clean value of [row][col]
 
     // for var row from 0 to mothership row - 1
     for (var row = 0; row < self.motherShipRow - 1; row++) {
@@ -230,10 +255,6 @@ function Game() {
   };
 
   self.moveEveryoneDown = function() {
-    // for var row from 1 to mothership row - 1
-    //   for var col from 0 to lastColumn
-    //     copy value of [row][col] to [row-1][col]
-    //     clean value of [row][col]
 
     // for var row from 1 to mothership row - 1
     for (var row = self.motherShipRow - 3; row > 0; row--) {
@@ -270,8 +291,10 @@ function Game() {
       }
     }
 
-    if (self.checkInvadersOnRow(18)) {
-      console.log('game over');
+    // GAME OVER CONDITION (WORK IN PROGRESS)
+    if (self.checkInvadersOnRow(17)) { //DOES NOT WORK BCS BOOLEAN FALSE?
+      console.log('Game over');
+      self.gameOver();
       debugger;
     }
 
