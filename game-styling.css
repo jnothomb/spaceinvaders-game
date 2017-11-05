@@ -23,7 +23,9 @@
 
  .cell {
    height: 25px;
+   /*og 25*/
    width: 25px;
+   /*og25*/
    /*border: 0.02px solid white;*/
    margin: 0px;
  }
@@ -32,7 +34,8 @@
 
  .invader {
    background-image: url(characters/invader2.png);
-   /*background-image: url(images/bieber.gif);*/
+   /*background-image: url(images/bieberyoung.jpg);*/
+   /*background-image: url(images/bieberold2.png);*/
    background-position: center;
    background-size: cover;
  }
@@ -49,6 +52,15 @@
    padding: 17px;
    margin: -17px;
  }
+
+ /*.mothership {
+   background: url(images/chuck.png) center center no-repeat;
+   overflow: hidden;
+   background-position: center;
+   background-size: cover;
+   padding: 30px;
+   margin: 30px;
+ }*/
 
  .shield {
    border-top: 0.5px solid rgb(81, 245, 87);
